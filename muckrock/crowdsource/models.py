@@ -410,6 +410,15 @@ class CrowdsourceResponse(models.Model):
             [email],
         )
 
+    # XXX
+    def get_response_values(self):
+        """replace me"""
+        metadata = self.crowdsource.get_metadata_keys()
+        return zip(
+            self.crowdsource.get_header_values(metadata),
+            self.get_values(metadata),
+        )
+
     class Meta:
         verbose_name = 'assignment response'
 
