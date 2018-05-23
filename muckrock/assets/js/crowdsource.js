@@ -85,7 +85,7 @@ $(document).ready(function(){
       if (data.results[i].data) {
         dataUrlP = `<p>Data:
           <a href="${data.results[i].data}">${data.results[i].data}</a>
-          </p>`
+          </p>`;
       } else {
         dataUrlP = "";
       }
@@ -179,7 +179,7 @@ $(document).ready(function(){
         'page_size': pageSize,
         'page': page,
         'flag': flag,
-        'search': search,
+        'search': search
       },
       success: handleUpdateResponses
     });
