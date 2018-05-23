@@ -92,13 +92,13 @@
     <h2 class="tab-panel-heading">Responses</h2>
     <section>
       <form>
-        <label>Search: <input type="textbox"></label>
+        <label>Search: <input type="textbox" id="assignment-search"></label>
         <label>
           Filter:
-          <select>
-            <option>All</option>
-            <option>Flagged</option>
-            <option>Unflagged</option>
+          <select id="filter">
+            <option value="">All</option>
+            <option value="flag">Flagged</option>
+            <option value="no-flag">Unflagged</option>
           </select>
         </label>
       </form>
@@ -107,12 +107,12 @@
           <p class="pagination__control__item">Showing <span class="first"></span> to <span class="last"></span> of <span class="total"></span></p>
           <p class="pagination__control__item">
             Page
-            <select name="page" id="page">
+            <select id="page">
             </select>
             of <span class="total-pages"></span>
           </p>
           <p class="pagination__control__item">
-            <select name="per_page" id="per-page">
+            <select id="per-page">
               <option value="10">10</option>
               <option value="25">25</option>
               <option value="50">50</option>

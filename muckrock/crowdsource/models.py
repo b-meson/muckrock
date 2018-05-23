@@ -346,6 +346,7 @@ class CrowdsourceResponse(models.Model):
     # keeping track of how many times a single user has submitted
     # per data item
     number = models.PositiveSmallIntegerField(default=1)
+    flag = models.BooleanField(default=False)
 
     def __unicode__(self):
         return u'Response by {} on {}'.format(

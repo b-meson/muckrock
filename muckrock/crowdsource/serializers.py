@@ -22,7 +22,7 @@ class CrowdsourceValueSerializer(serializers.ModelSerializer):
 class CrowdsourceResponseSerializer(serializers.ModelSerializer):
     """Serializer for the Crowdsource Response model"""
 
-    values = CrowdsourceValueSerializer(many=True)
+    values = CrowdsourceValueSerializer(many=True, read_only=True)
     user = serializers.StringRelatedField(source='user.get_full_name')
     data = serializers.StringRelatedField(source='data.url')
     datetime = serializers.DateTimeField(format='%m/%d/%Y %I:%M %p')

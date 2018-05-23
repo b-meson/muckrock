@@ -66,10 +66,15 @@ $(document).ready(function(){
     $(selector).after(newElement);
   }
 
-  var page = 1, pageSize = 10, lastPage = 1;
+  var
+    page = 1,
+    pageSize = 10,
+    lastPage = 1,
+    flag = null,
+    search = "";
 
   function handleUpdateResponses(data) {
-    var response, values, dataValues, dataUrlP;
+    var response, values, dataValues, dataUrlP, checked;
     var responses = $("section.assignment-responses");
     responses.html("");
 
@@ -84,6 +89,11 @@ $(document).ready(function(){
       } else {
         dataUrlP = "";
       }
+      if (data.results[i].flag) {
+        checked = "checked";
+      } else {
+        checked = "";
+      }
       response.append(`
         <header class="textbox__header">
           <p class="from">From: ${data.results[i].user}</p>
@@ -93,7 +103,10 @@ $(document).ready(function(){
           </time>
         </header>
         <section class="textbox__section actionables">
-          <label>Flagged: <input type="checkbox"></label>
+          <label>
+            Flagged:
+            <input type="checkbox" class="flag-checkbox" data-crowdsource="${data.results[i].id}" ${checked}>
+          </label>
           &nbsp;&nbsp;
           Tags: <input type="textbox">
         </section>
@@ -109,6 +122,15 @@ $(document).ready(function(){
     }
     $('.collapsable header').click(function(){
       $(this).parent().toggleClass('collapsed');
+    });
+    $('.flag-checkbox').click(function(){
+      $.ajax({
+        url: "/api_v1/assignment-responses/" + $(this).data("crowdsource") + "/",
+        type: "PATCH",
+        data: {
+          'flag': $(this).prop("checked")
+        }
+      });
     });
 
     // update the pagination bar
@@ -156,6 +178,8 @@ $(document).ready(function(){
         'crowdsource': $("section.assignment-responses").data("crowdsource"),
         'page_size': pageSize,
         'page': page,
+        'flag': flag,
+        'search': search,
       },
       success: handleUpdateResponses
     });
@@ -212,5 +236,28 @@ $(document).ready(function(){
     page = 1;
     updateResponses();
   });
+  $("#assignment-responses #filter").change(function() {
+    var newFlag = $(this).val();
+    if (newFlag === "flag") {
+      flag = true;
+    } else if (newFlag === "no-flag") {
+      flag = false;
+    } else {
+      flag = null;
+    }
+    updateResponses();
+  });
+
+  var timeoutId;
+  function searchHandler() {
+    search = $(this).val();
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(function() {
+      // Runs 1 second (1000 ms) after the last change
+      updateResponses();
+    }, 1000);
+  }
+  $("#assignment-responses #assignment-search").on(
+    "input propertychange change", searchHandler);
 
 });

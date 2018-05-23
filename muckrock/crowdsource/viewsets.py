@@ -6,7 +6,7 @@ Viewsets for the Crowdsource application API
 from django.db.models import Prefetch
 
 # Third Party
-import django_filters
+from django_filters import rest_framework as django_filters
 from rest_framework import permissions, viewsets
 
 # MuckRock
@@ -50,6 +50,7 @@ class CrowdsourceResponseViewSet(viewsets.ModelViewSet):
 
         class Meta:
             model = CrowdsourceResponse
-            fields = ('crowdsource',)
+            fields = ('flag',)
 
     filter_class = Filter
+    search_fields = ('values__value',)
